@@ -1,0 +1,4 @@
+resources:
+- hello-ns.yaml
+- hello-svc.yaml
+- debug-pod.yaml

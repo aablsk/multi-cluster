@@ -1,0 +1,17 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: private-hello-route
+  namespace: hello
+  labels:
+    gateway: internal-http-gw
+spec:
+  parentRefs:
+  - name: internal-http-gw
+    namespace: hello
+  rules:
+  - backendRefs:
+    - group: net.gke.io
+      kind: ServiceImport
+      name: hello
+      port: 80

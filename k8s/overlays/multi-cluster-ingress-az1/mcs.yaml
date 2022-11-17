@@ -1,0 +1,15 @@
+apiVersion: networking.gke.io/v1
+kind: MultiClusterService
+metadata:
+  name: hello
+  namespace: hello
+spec:
+  template:
+    spec:
+      selector:
+        app: hello
+      ports:
+      - name: web
+        protocol: TCP
+        port: 80
+        targetPort: 8080

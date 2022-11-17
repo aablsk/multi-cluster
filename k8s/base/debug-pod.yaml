@@ -1,0 +1,15 @@
+# helper pod to exec curls from
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl
+  namespace: hello
+spec:
+  containers:
+  - name: curl
+    image: curlimages/curl
+    command:
+      - sleep
+      - "infinity"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always

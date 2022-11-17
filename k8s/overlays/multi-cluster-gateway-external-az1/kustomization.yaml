@@ -1,0 +1,3 @@
+resources:
+- mcg-external.yaml
+- http-route.yaml

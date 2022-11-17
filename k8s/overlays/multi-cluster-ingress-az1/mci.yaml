@@ -1,0 +1,11 @@
+apiVersion: networking.gke.io/v1
+kind: MultiClusterIngress
+metadata:
+  name: hello
+  namespace: hello
+spec:
+  template:
+    spec:
+      backend:
+        serviceName: hello
+        servicePort: 80

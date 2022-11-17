@@ -1,0 +1,6 @@
+# needs to be deployed to all clusters where the service is running
+apiVersion: net.gke.io/v1
+kind: ServiceExport
+metadata:
+  namespace: hello
+  name: hello
