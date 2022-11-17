@@ -6,6 +6,8 @@ metadata:
     app: hello
     service: hello
   namespace: hello
+  annotations:
+    fun-level: max
 spec:
   ports:
   - port: 80

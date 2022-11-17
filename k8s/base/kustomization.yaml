@@ -2,3 +2,4 @@ resources:
 - hello-ns.yaml
 - hello-svc.yaml
 - debug-pod.yaml
+- hello-deployment.yaml
