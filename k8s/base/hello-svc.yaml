@@ -19,8 +19,6 @@ metadata:
   labels:
     app: hello
     service: hello
-  annotations:
-    networking.gke.io/load-balancer-type: Internal
 spec:
   type: ClusterIP
   ports:
