@@ -14,7 +14,7 @@
 
 # explicit setup of VPC & subnets for GKE resources
 resource "google_compute_router" "gke-nat-router" {
-  project = var.project_id
+  project = var.shared_vpc_project_id
   name    = "gke-nat-router"
   network = module.network.network_self_link
   region  = var.region
@@ -22,7 +22,8 @@ resource "google_compute_router" "gke-nat-router" {
 
 module "gke-nat" {
   source                             = "terraform-google-modules/cloud-nat/google"
-  project_id                         = var.project_id
+
+  project_id                         = var.shared_vpc_project_id
   region                             = var.region
   router                             = google_compute_router.gke-nat-router.name
   name                               = "gke-nat-config"

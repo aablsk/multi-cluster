@@ -1,0 +1,7 @@
+namespace: hello-az2
+resources:
+  - hello-az2-serviceexport.yaml
+  - ../../base
+images:
+- name: gcr.io/google-samples/hello-app
+  newTag: "2.0"

@@ -20,30 +20,48 @@ module "project-iam-bindings" {
 
   bindings = {
     "roles/cloudtrace.agent" = [
-        "serviceAccount:${google_service_account.gke_workload_gke_az1.email}",
         "serviceAccount:${module.gke_az1.service_account}",
-        "serviceAccount:${google_service_account.gke_workload_gke_az2.email}",
         "serviceAccount:${module.gke_az2.service_account}",
     ],
     "roles/monitoring.metricWriter" = [
-        "serviceAccount:${google_service_account.gke_workload_gke_az1.email}",
         "serviceAccount:${module.gke_az1.service_account}",
-        "serviceAccount:${google_service_account.gke_workload_gke_az2.email}",
         "serviceAccount:${module.gke_az2.service_account}",
     ],
     "roles/logging.logWriter" = [
-        "serviceAccount:${google_service_account.gke_workload_gke_az1.email}",
         "serviceAccount:${module.gke_az1.service_account}",
-        "serviceAccount:${google_service_account.gke_workload_gke_az2.email}",
         "serviceAccount:${module.gke_az2.service_account}",
     ],
     # REQUIRED FOR MCS
     "roles/compute.networkViewer" = [
         "serviceAccount:${var.project_id}.svc.id.goog[gke-mcs/gke-mcs-importer]"
     ]
-    # REQUIRED FOR MCI
-    "roles/container.admin" = [
-      "serviceAccount:service-${data.google_project.project.number}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
+  }
+
+  depends_on = [
+    module.gke_az1
+  ]
+}
+
+# authoritative project-iam-bindings to increase reproducibility
+module "project-iam-bindings-shared-vpc" {
+  source   = "terraform-google-modules/iam/google//modules/projects_iam"
+  projects = [var.shared_vpc_project_id]
+  mode     = "authoritative"
+
+  bindings = {
+    "roles/container.hostServiceAgentUser" = [
+      "serviceAccount:service-${data.google_project.service_project.number}@container-engine-robot.iam.gserviceaccount.com"
+    ]
+    # this is not best practice, don't do this in production!
+    "roles/compute.securityAdmin" = [
+      "serviceAccount:service-${data.google_project.service_project.number}@container-engine-robot.iam.gserviceaccount.com"
+    ]
+    "roles/compute.networkUser" = [
+      "serviceAccount:service-${data.google_project.service_project.number}@container-engine-robot.iam.gserviceaccount.com",
+      "serviceAccount:${data.google_project.service_project.number}@cloudservices.gserviceaccount.com"
+    ],
+    "roles/multiclusterservicediscovery.serviceAgent" = [
+      "serviceAccount:service-793999690230@gcp-sa-mcsd.iam.gserviceaccount.com"
     ]
   }
 }

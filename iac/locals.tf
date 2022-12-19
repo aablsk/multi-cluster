@@ -14,16 +14,7 @@
 
 locals {
   cluster_name_az1 = "gke-az1"
-  cidr_az1_primary_address_range = "10.170.143.0/27"
-  cidr_az1_control_plane = "10.170.143.64/28"
-  cidr_az1_secondary_range_services = "10.110.99.0/24"
-  cidr_az1_secondary_range_pods = "10.110.104.0/22"
-
   cluster_name_az2 = "gke-az2"
-  cidr_az2_primary_address_range = "10.170.143.32/27"
-  cidr_az2_control_plane = "10.170.143.80/28"
-  cidr_az2_secondary_range_services = "10.191.203.0/24"
-  cidr_az2_secondary_range_pods = "10.110.108.0/22"
 
   network_name     = "gcp-network-shared" # VPC containing resources will be given this name
 

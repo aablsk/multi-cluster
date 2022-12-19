@@ -13,27 +13,22 @@
 # limitations under the License.
 
 terraform {
-  backend "gcs" {
-      bucket = "$BUCKET"
-      prefix = "multi-cluster-service"
-  }
 }
 
 # google-beta provider for fleet API, artifact registry
 provider "google-beta" {
-  project     = var.project_id
-  region      = var.region
+  region = var.region
 }
 
 # default google provider for most resources
 provider "google" {
-  project     = var.project_id
-  region      = var.region
-}
-
-# used to get project number
-data "google_project" "project" {
+  region = var.region
 }
 
 # data needed for kubernetes provider
 data "google_client_config" "default" {}
+
+# data for getting shared vpc project number
+data "google_project" "service_project" {
+  project_id = var.project_id
+}

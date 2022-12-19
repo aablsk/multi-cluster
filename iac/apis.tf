@@ -31,3 +31,17 @@ module "enabled_google_apis" {
     "multiclusteringress.googleapis.com"
   ]
 }
+
+module "enabled_google_apis_shared_vpc" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 13.0"
+
+  project_id                  = var.shared_vpc_project_id
+  disable_services_on_destroy = false
+
+  activate_apis = [
+    "compute.googleapis.com",
+    "dns.googleapis.com",
+    "container.googleapis.com",
+  ]
+}

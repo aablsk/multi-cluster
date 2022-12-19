@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# needs to be deployed to all clusters where the service is running
-apiVersion: net.gke.io/v1
-kind: ServiceExport
+apiVersion: v1
+kind: Namespace
 metadata:
-  namespace: hello
-  name: hello
+  name: hello-az1

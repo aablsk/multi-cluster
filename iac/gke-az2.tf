@@ -28,6 +28,7 @@ module "gke_az2" {
   name                    = local.cluster_name_az2
   regional                = false
   zones                   = [var.az2]
+  network_project_id      = var.shared_vpc_project_id
   network                 = local.network_name
   subnetwork              = local.network[local.cluster_name_az2].subnet_name
   ip_range_pods           = local.network[local.cluster_name_az2].ip_range_pods
@@ -35,7 +36,7 @@ module "gke_az2" {
   enable_private_nodes    = true
   enable_private_endpoint = false
 
-  master_ipv4_cidr_block          = local.cidr_az2_control_plane
+  master_ipv4_cidr_block          = var.cidr_az2_control_plane
   release_channel                 = "RAPID"
   horizontal_pod_autoscaling      = true
   create_service_account          = true
@@ -44,7 +45,7 @@ module "gke_az2" {
   node_pools = [
     {
       name                      = "default-node-pool-${local.cluster_name_az2}"
-      machine_type              = "e2-medium"
+      machine_type              = "n2d-standard-2"
       node_locations            = var.az2
       node_count                = 3
       disk_size_gb              = 100
@@ -63,21 +64,8 @@ module "gke_az2" {
   depends_on = [
     module.enabled_google_apis,
     module.network,
-  ]
-}
-
-# gke_az2 GKE workload GSA
-resource "google_service_account" "gke_workload_gke_az2" {
-  account_id = "gke-workload-gke-az2"
-}
-
-# binding gke_az2 GKE workload GSA to KSA
-resource "google_service_account_iam_member" "gke_workload_gke_az2_identity" {
-  service_account_id = google_service_account.gke_workload_gke_az2.id
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.project_id}.svc.id.goog[hello/default]"
-  depends_on = [
-    module.gke_az2
+    google_compute_shared_vpc_service_project.service,
+    module.project-iam-bindings-shared-vpc
   ]
 }
 

@@ -41,7 +41,7 @@ resource "google_gke_hub_feature" "mcs" {
 }
 
 resource "google_gke_hub_feature" "mci" {
-  count = var.enable_mci == true ? 1 : 0 # create this resource only if mci is enabled
+  count = var.enable_mcg == true ? 1 : 0 # create this resource only if mci or mcg is enabled
 
   name = "multiclusteringress"
   location = "global"
