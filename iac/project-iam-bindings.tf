@@ -50,15 +50,17 @@ module "project-iam-bindings-shared-vpc" {
 
   bindings = {
     "roles/container.hostServiceAgentUser" = [
-      "serviceAccount:service-${data.google_project.service_project.number}@container-engine-robot.iam.gserviceaccount.com"
+      "serviceAccount:service-${data.google_project.cluster_project.number}@container-engine-robot.iam.gserviceaccount.com",
+      "serviceAccount:${google_service_account.nodes_az1.email}",
+      "serviceAccount:${google_service_account.nodes_az2.email}"
     ]
     # this is not best practice, don't do this in production!
     "roles/compute.securityAdmin" = [
-      "serviceAccount:service-${data.google_project.service_project.number}@container-engine-robot.iam.gserviceaccount.com"
+      "serviceAccount:service-${data.google_project.cluster_project.number}@container-engine-robot.iam.gserviceaccount.com"
     ]
     "roles/compute.networkUser" = [
-      "serviceAccount:service-${data.google_project.service_project.number}@container-engine-robot.iam.gserviceaccount.com",
-      "serviceAccount:${data.google_project.service_project.number}@cloudservices.gserviceaccount.com"
+      "serviceAccount:service-${data.google_project.cluster_project.number}@container-engine-robot.iam.gserviceaccount.com",
+      "serviceAccount:${data.google_project.cluster_project.number}@cloudservices.gserviceaccount.com"
     ],
     "roles/multiclusterservicediscovery.serviceAgent" = [
       "serviceAccount:service-793999690230@gcp-sa-mcsd.iam.gserviceaccount.com"

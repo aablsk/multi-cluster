@@ -43,9 +43,9 @@ variable "enable_mcg" {
 }
 
 # AZ1
-variable "az1" {
+variable "region_az1" {
     type = string
-    description = "Zone where cluster AZ1 resources will be deployed"
+    description = "Region where cluster AZ1 resources will be deployed"
 }
 
 variable "cidr_az1_primary_address_range" {
@@ -69,9 +69,9 @@ variable "cidr_az1_secondary_range_pods" {
 }
 
 # AZ2
-variable "az2" {
+variable "region_az2" {
     type = string
-    description = "Zone where cluster AZ2 resources will be deployed"
+    description = "Region where cluster AZ2 resources will be deployed"
 }
 
 variable "cidr_az2_primary_address_range" {

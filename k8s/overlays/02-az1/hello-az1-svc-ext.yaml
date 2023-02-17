@@ -12,28 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-}
-
-# google-beta provider for fleet API, artifact registry
-provider "google-beta" {
-  region = var.region
-}
-
-# default google provider for most resources
-provider "google" {
-  region = var.region
-}
-
-# data needed for kubernetes provider
-data "google_client_config" "default" {}
-
-# data for getting shared vpc project number
-data "google_project" "cluster_project" {
-  project_id = var.project_id
-}
-
-# data for getting shared vpc project number
-data "google_project" "service_project" {
-  project_id = var.shared_vpc_project_id
-}
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-ext
+  labels:
+    app: hello
+    service: hello
+spec:
+  type: ExternalName
+  externalName: hello.hello-az1.svc.clusterset.local

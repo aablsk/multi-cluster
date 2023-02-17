@@ -20,14 +20,21 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.gke_az1.ca_certificate)
 }
 
+resource "google_service_account" "nodes_az1" {
+  project      = var.project_id
+  account_id   = "nodes-az1"
+  display_name = "Nodes Service Account AZ1"
+}
+
 # AZ1 standard cluster
 module "gke_az1" {
   source = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster"
 
   project_id              = var.project_id
   name                    = local.cluster_name_az1
-  regional                = false
-  zones                   = [var.az1]
+  regional                = true
+  region                  = var.region_az1
+  zones                   = ["${var.region_az1}-a","${var.region_az1}-b"]
   network_project_id      = var.shared_vpc_project_id
   network                 = local.network_name
   subnetwork              = local.network[local.cluster_name_az1].subnet_name
@@ -36,24 +43,26 @@ module "gke_az1" {
   enable_private_nodes    = true
   enable_private_endpoint = false
 
-  master_ipv4_cidr_block          = var.cidr_az1_control_plane
-  release_channel                 = "RAPID"
-  horizontal_pod_autoscaling      = true
-  create_service_account          = true
+  master_ipv4_cidr_block     = var.cidr_az1_control_plane
+  release_channel            = "RAPID"
+  horizontal_pod_autoscaling = true
+  create_service_account     = false
+  service_account            = google_service_account.nodes_az1.email
+  cluster_resource_labels    = { "mesh_id" : "proj-${data.google_project.cluster_project.number}" }
 
-  enable_shielded_nodes         = true
+  enable_shielded_nodes = true
   node_pools = [
     {
-      name                      = "default-node-pool-${local.cluster_name_az1}"
-      machine_type              = "n2d-standard-2"
-      node_locations            = var.az1
-      node_count                = 3
-      disk_size_gb              = 100
-      disk_type                 = "pd-standard"
-      image_type                = "COS_CONTAINERD"
-      auto_repair               = true
-      auto_upgrade              = true
-      enable_secure_boot        = true
+      name               = "default-node-pool-${local.cluster_name_az1}"
+      machine_type       = "n2d-standard-2"
+      node_locations     = "${var.region_az1}-a,${var.region_az1}-b"
+      node_count         = 3
+      disk_size_gb       = 100
+      disk_type          = "pd-standard"
+      image_type         = "COS_CONTAINERD"
+      auto_repair        = true
+      auto_upgrade       = true
+      enable_secure_boot = true
     },
   ]
 

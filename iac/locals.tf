@@ -26,4 +26,5 @@ locals {
       ip_range_pods           = "${name}-ip-range-pods"
       ip_range_services       = "${name}-ip-range-svc"
   } }
+
 }

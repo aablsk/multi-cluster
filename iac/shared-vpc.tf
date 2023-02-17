@@ -24,13 +24,13 @@ module "network" {
     {
       subnet_name           = local.network[local.cluster_name_az1].subnet_name
       subnet_ip             = var.cidr_az1_primary_address_range
-      subnet_region         = var.region
+      subnet_region         = var.region_az1
       subnet_private_access = true
     },
     {
       subnet_name           = local.network[local.cluster_name_az2].subnet_name
       subnet_ip             = var.cidr_az2_primary_address_range
-      subnet_region         = var.region
+      subnet_region         = var.region_az2
       subnet_private_access = true
     }
   ]
