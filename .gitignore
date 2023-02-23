@@ -16,4 +16,4 @@ terraform.tfvars
 .terraform
 *.tfstate*
 .terraform.lock.hcl
-repro
+repro*

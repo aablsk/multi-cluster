@@ -12,8 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resources:
-- debug-pod.yaml
-- hello-deployment.yaml
-- hello-svc.yaml
-- hello-svc-multiport.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-ext-multi
+  labels:
+    app: hello
+    service: hello
+spec:
+  type: ExternalName
+  externalName: hello-multi.hello-az1.svc.clusterset.local

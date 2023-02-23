@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resources:
-- debug-pod.yaml
-- hello-deployment.yaml
-- hello-svc.yaml
-- hello-svc-multiport.yaml
+# needs to be deployed to all clusters where the service is running
+apiVersion: net.gke.io/v1
+kind: ServiceExport
+metadata:
+  namespace: hello-az1
+  name: hello-multi

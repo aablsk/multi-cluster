@@ -1,6 +1,7 @@
 namespace: hello-az2
 resources:
   - hello-az2-serviceexport.yaml
+  - hello-az2-multi-serviceexport.yaml
   - ../../base
 images:
 - name: gcr.io/google-samples/hello-app
