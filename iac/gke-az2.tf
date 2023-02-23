@@ -32,9 +32,9 @@ module "gke_az2" {
 
   project_id              = var.project_id
   name                    = local.cluster_name_az2
-  regional                = true
+  regional                = false
   region                  = var.region_az2
-  zones                   = ["${var.region_az2}-a","${var.region_az2}-b"]
+  zones                   = ["${var.region_az2}-a"]
   network_project_id      = var.shared_vpc_project_id
   network                 = local.network_name
   subnetwork              = local.network[local.cluster_name_az2].subnet_name
@@ -42,6 +42,7 @@ module "gke_az2" {
   ip_range_services       = local.network[local.cluster_name_az2].ip_range_services
   enable_private_nodes    = true
   enable_private_endpoint = false
+  dns_cache               = true
 
   master_ipv4_cidr_block     = var.cidr_az2_control_plane
   release_channel            = "RAPID"
@@ -54,7 +55,7 @@ module "gke_az2" {
     {
       name               = "default-node-pool-${local.cluster_name_az2}"
       machine_type       = "n2d-standard-2"
-      node_locations     = "${var.region_az2}-a,${var.region_az2}-b"
+      node_locations     = "${var.region_az2}-a"
       node_count         = 3
       disk_size_gb       = 100
       disk_type          = "pd-standard"
